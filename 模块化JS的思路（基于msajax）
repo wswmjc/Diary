@@ -1,0 +1,32 @@
+function mode$(mode){
+
+   var _$ = jQuery;
+
+   function _mode(mode){
+
+     this.mode = mode;
+
+   };
+
+   _mode.prototype.$ = function(selector){
+
+       if(/^#/.test(selector)){
+
+         return _$(selector.replace("#","#"+this.mode+"_"));
+
+       }else{
+
+         return _$(selector);
+
+       }
+
+   }
+
+   return new _mode(mode);
+
+ }
+
+
+ $mode = mode$(mode);
+
+ $mode.$("#id");
