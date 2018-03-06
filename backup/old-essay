@@ -1,0 +1,268 @@
+//目标长度处理
+	            if ($("#trainGoal").text().length > 34) {
+	                var text = $("#trainGoal").text();
+	                $("#trainGoal").text(text.substring(0, 20) + "......");
+	                $("#trainGoal").hover(function () {
+	                    $("#trainGoal").attr("title", text);
+	                });
+	            }
+	超出长度裁剪，并且title 显示
+
+//jqgrid 长度显示
+<style>
+
+.ui-jqgrid tr.jqgrow td {
+
+text-overflow : ellipsis;
+
+}
+
+</style>
+
+用上这个就可以显示成  【啊啊啊啊???】这种格式了
+
+
+
+
+
+
+
+要是想换行全部显示的话就用下面的：
+
+<style>
+
+
+.ui-jqgrid tr.jqgrow td {
+white-space: normal !important;
+height:auto;
+}
+
+
+</style>
+
+
+subversion 创建svn
+svnadmin create D:/SVN/net2013
+
+
+按钮实现文件导入
+ <input type="file" name="k" style="display: none;" onchange="$('#Text4').val(this.value)"/>
+ <input style="width: 100px" type="button" id="Button3" onclick="k.click()" value="上传/查看" />
+
+select触发前后
+$("#role_in").bind("change", { b_id: $("#role_in").val().replace("in_", "") }, showAllRole);
+        function showAllRole(event) {
+            $("#user_" + event.data.b_id).hide();
+            $("#user_" + $("#role_in").val().replace("in_", "")).show();
+            $("#role_in").unbind();
+            $("#role_in").bind("change", { b_id: $("#role_in").val().replace("in_", "") }, showAllRole);
+        }
+
+特殊符号需要转移字符
+? -- &reg;
+? -- &trade;
+
+递归删除数据库树结构
+with my1 as(select * from aaa where id = 1
+   union all select aaa.* from my1, aaa where my1.id = aaa.pid
+  )
+delete from aaa where exists (select id from my1 where my1.id = aaa.id) 
+
+遍历孩子
+with child_area as(select * from EVV_ERSG55_HH.dbo.Gl2_Area where R_PId = '2'
+                           union all select EVV_ERSG55_HH.dbo.Gl2_Area.* from child_area, EVV_ERSG55_HH.dbo.Gl2_Area 
+                                          where child_area.R_Id = EVV_ERSG55_HH.dbo.Gl2_Area.R_PId)
+                  select * from  (select row_number() over (order by EVV_ERSG55_HH.dbo.Gl2_Area.R_Id) as row,* from EVV_ERSG55_HH.dbo.Gl2_Area where exists (select R_Id from child_area where child_area.R_Id = EVV_ERSG55_HH.dbo.Gl2_Area.R_Id)) a where row between 1 and 2
+
+//单选checkBox
+        $(':checkbox[name=groupWork]').each(function () {
+            $(this).click(function () {
+                if ($(this).attr('checked')) {
+                    $(':checkbox[name=groupWork]').removeAttr('checked');
+                    $(this).attr('checked', 'checked');
+                } else {//如果不保留最后一项，可以删除else
+                    $(this).attr('checked', 'checked');
+                }
+            });
+        });
+
+//js 删除属性
+Deleting Properties
+The only way to actually remove a property from an object is to use thedelete operator; setting the property to undefined or null only remove the value associated with the property, but not the key.
+
+
+[javascript] view plaincopyprint
+var obj = {
+    bar: 1,
+    foo: 2,
+    baz: 3
+};
+obj.bar = undefined;
+obj.foo = null;
+delete obj.baz;
+
+for(var i in obj) {
+    if (obj.hasOwnProperty(i)) {
+        console.log(i, '' + obj[i]);
+    }
+}
+
+
+
+The above outputs both bar undefined and foo null - only baz was removed and is therefore missing from the output.
+
+行列转换sql
+declare @sql varchar(8000)
+set @sql = 'select EMP_NAME '
+select @sql = @sql + ',max(case '+convert(varchar(25),TRAIN_DATE,111)+' when '+train_date+' then ATTENDENCE else ''学习'' end)  ['+train_date+']'
+from (select distinct convert(varchar(25),TRAIN_DATE,111) train_date from TRAIN_ATTENDENCE where train_actual_id = '10c968032642fcb3a67f910981a33f4f') as a
+set @sql = @sql + ' from TRAIN_ATTENDENCE where train_actual_id = ''10c968032642fcb3a67f910981a33f4f'' group by EMP_NAME'
+exec(@sql)
+
+select a.train_item,
+       a.train_content,
+       train_shape = (select name from code_train_shape where id = a.train_shape_id),
+       a.train_org,
+       a.train_target,
+       train_teacher = (select name from code_teacher where id = b.teacher_id),
+       be_time = (convert(varchar(25),beg_date,111)+'-'+convert(varchar(25),end_date,111)),
+       train_time = ((select isnull(sum(course_time),0) from theory_content where train_actual_id = a.id)+((select isnull(sum(course_time),0) from practice_content where train_actual_id = a.id)),
+       a.train_place,
+       a.train_object,
+       train_person_num = (select isnull(count(*),0) from train_person where train_actual_id = a.id),
+       a.train_fee,
+       train_att = ((select isnull(count(*),0) from train_attendence where train_actual_id = a.id and attendence = '学习')/(select isnull(count(*),1) from train_attendence where train_actual_id = a.id)),
+       train_pass = ((select isnull(count(*),0) from train_score where train_actual_id = a.id and isnull(theory_score,0) >= '60' and isnull(theory_score1,0) >= '60' and isnull(practise_score,0) >= '60')/(select isnull(count(*),1) from train_score where train_actual_id = a.id))
+        from train_actual a inner join train_plan b on a.id = b.id 
+
+
+/// <summary>
+    /// 根据获取的datatable，为之排序，并添加序号，然后返回需要的前几行信息
+    /// </summary>
+    /// <param name="dt">获得的datatable</param>
+    /// <param name="sortColum">排序的列名</param>
+    /// <param name="sortType">排序的类型desc/asc</param>
+    /// <param name="topNo">top行数</param>
+    /// <returns></returns>
+    protected DataTable SortGetRowno(DataTable dt,string sortColum,string sortType,int topNo) {
+        DataTable copyDt = new DataTable();
+        DataTable resultDt = new DataTable();
+        if (dt != null)
+        {
+            dt.DefaultView.Sort = sortColum + " " + sortType;
+            copyDt = dt.DefaultView.ToTable();
+            copyDt.Columns.Add("rowno");
+            for (int i = 0; i < copyDt.Rows.Count; i++)
+            {
+                copyDt.Rows[i]["rowno"] = i+1;
+            }
+            resultDt = copyDt.Copy();
+            resultDt.Clear();
+            for (int i = 0; i < (topNo<copyDt.Rows.Count?topNo:copyDt.Rows.Count); i++) {
+                resultDt.Rows.Add(copyDt.Rows[i].ItemArray);
+            }
+        }
+        return resultDt;
+    }
+
+
+USE [xxhj]
+GO
+/****** Object:  TaskParameterFunction [dbo].[FN_GET_TASKPARAMETER_STR]    Script Date: 09/16/2014 09:52:10 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+ALTER FUNCTION [dbo].[FN_GET_TASKPARAMETER_STR](@TASK_ID varchar(50))
+RETURNS varchar(1000) AS
+BEGIN
+   /* 编者：mjc   2014.07.23                                           */
+   /* 功能：根据任务ID获得所有任务参数字符串                                */
+   /* 输入参数：@TASK_ID           类型：VARCHAR(50)                      */
+   /* 返回参数：所有任务参数字符串   类型：VARCHAR(1000))                   */
+   DECLARE @retn      VARCHAR(1000)
+   DECLARE @PARAMETER_NAME   VARCHAR(50)
+   DECLARE @PARAMETER_VALUE   VARCHAR(50)
+   SET @retn = ''
+   Declare c Cursor for
+            select PARAMETER_NAME,PARAMETER_VALUE from TASK_PARAMETER where  TASK_ID= @TASK_ID order by 1
+        Open c  
+        begin 
+              Fetch next from c into @PARAMETER_NAME,@PARAMETER_VALUE
+              While @@Fetch_Status=0 
+              Begin
+                   SET @retn =@retn + (@PARAMETER_NAME+'='+@PARAMETER_VALUE)+'&'
+                   Fetch next from c into @PARAMETER_NAME,@PARAMETER_VALUE
+               End
+        end
+        Close c
+        Deallocate c    
+   if len(@retn)>0
+	set @retn= '?'+LEFT(@retn,len(@retn)-1)
+   return @retn
+END
+
+
+select * from
+(select * ,row_number() over (partition by testTime,nameOfGame,kindOfTest  order by  testTime) as numrow
+from 表 )  表 where numrow>1
+
+delete  表 from
+(select * ,row_number() over (partition by testTime,nameOfGame ,kindOfTest  order by  testTime) as numrow
+from 表 )  表 where numrow>1
+
+
+
+匹配颜色
+var id="2224444444";
+ var div=document.getElementById("test");
+ var reg=/(222)/;
+ id=id.replace(reg,"<span class='id'>$1</span>");
+ div.innerHTML=id;
+
+
+手机端适配 flexible
+<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0,maximum-scale=1.0, user-scalable=0"/>
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" media="(device-height: 568px)" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge，chrome=1"/>
+	<meta name="apple-touch-fullscreen" content="yes"/>
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+	<meta name="format-detection" content="telephone=no"/>
+	<meta name="x5-fullscreen" content="true"/>
+	<meta name="renderer" content="webkit"/> <!--360浏览器强制使用极速模式-->
+
+
+
+with dim as (select COMMUNITY_MEMBER.MEMBER_ID,COMMUNITY_MEMBER.MEMBER_NAME,COMMUNITY_LABEL_INFO.ID as LABEL_ID,COMMUNITY_LABEL_INFO.LABEL_NAME
+from COMMUNITY_MEMBER left join COMMUNITY_LABEL_INFO on COMMUNITY_MEMBER.COMMUNITY_ID=COMMUNITY_LABEL_INFO.COMMUNITY_ID
+     left join COMMUNITY_PUBLISH_INFO on COMMUNITY_MEMBER.MEMBER_ID=COMMUNITY_PUBLISH_INFO.CREATER_ID
+where COMMUNITY_MEMBER.COMMUNITY_ID='C04D8715-353D-4838-9E15-83527C14180D'),
+ measures as (select COMMUNITY_PUBLISH_LABEL_RELATION.PUBLISH_ID,COMMUNITY_PUBLISH_LABEL_RELATION.LABEL_ID,CREATER_ID,COMMUNITY_PUBLISH_INFO.PUBLISH_TITLE
+from COMMUNITY_PUBLISH_LABEL_RELATION left join COMMUNITY_PUBLISH_INFO on PUBLISH_ID=ID
+where COMMUNITY_ID='C04D8715-353D-4838-9E15-83527C14180D')
+select dim.MEMBER_ID,dim.MEMBER_NAME,dim.LABEL_ID,dim.LABEL_NAME,count(distinct PUBLISH_ID)
+from dim left join measures on dim.LABEL_ID=measures.LABEL_ID and dim.MEMBER_ID=CREATER_ID
+group by dim.MEMBER_ID,dim.MEMBER_NAME,dim.LABEL_ID,dim.LABEL_NAME
+
+declare @sql varchar(8000)
+set @sql = 'select MEMBER_NAME '
+select @sql = @sql + ',max(case LABEL_NAME when '''+LABEL_NAME+''' then PUBLISH_COUNT else ''0'' end)  ['+LABEL_NAME+']'
+from (select distinct LABEL_NAME from GetCommunityToLabelStatistics('C04D8715-353D-4838-9E15-83527C14180D')) as a
+set @sql = @sql + ' from GetCommunityToLabelStatistics(''C04D8715-353D-4838-9E15-83527C14180D'') B group by MEMBER_NAME'
+EXEC( @sql)
+
+
+mongod --dbpath E:\MongoDB\db --journal --storageEngine=mmapv1
+
+图片展示
+展示的时候有两种选择，一种是固定图片高度，图片等比显示，这样图片不会拉伸失真
+一种是定宽不限高度，就会出现列表层次不齐，影响美观
+还有种办法，固定尺寸，按最小边等比拉伸，多余部分切除
+给用户提交任何图片 前端提供裁剪界面  裁剪后提交
+你的控件应该拉伸他
+直到铺满你的矩形
+如果溢出 用户可以控制选择哪部分溢出被裁剪
+但是会铺满
+上下左右移动   放大 缩小  就这几个功能
+
