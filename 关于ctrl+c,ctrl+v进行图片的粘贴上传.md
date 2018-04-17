@@ -214,4 +214,4 @@ public void ProcessRequest (HttpContext context) {
 &emsp;&emsp;最后有一个问题是本地图片的粘贴，目前火狐是直接支持将图片转为base64然后粘
 贴的到浏览器中，基于安全原因，IE谷歌不提供这个功能。至于火狐是如果实现的，暂时没有查到
 它将临时粘贴的文件存储到哪个对象中，因此本地文件暂时还是通过input[type='file']来进行
-form上传。如果有人知道如果做，请不吝赐教！
+form上传。如果有人知道如何做，请不吝赐教！
