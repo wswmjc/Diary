@@ -65,11 +65,40 @@
         throw " start event error ";
       }
       
-      var then = function(link_event){
+      //承诺链构建方法
+      var then = function(link_event){
          if(link_event && typeof link_event === "function"){
             event_list.push(link_event);
          }
       }
    }
 ```
-      
+&emsp;&emsp;当承诺链构建完成则执行所有承诺：<br/>
+```javascript
+   var Promise = function(start_event){
+      var status = "start";
+      var event_list = [];
+      
+      //加入启动事件
+      if(start_event && typeof start_event === "function"){
+         event_list.push(start_event);
+      }else{
+        throw " start event error ";
+      }
+      
+      //承诺链构建
+      var then = function(link_event){
+         if(link_event && typeof link_event === "function"){
+            event_list.push(link_event);
+         }
+      }
+      
+      //执行承诺
+      event_list.shift()(function(){
+         while(event_list.lenght){
+           var emit_event = event_list.shift();
+           emit_event();
+         }
+      });
+   }
+```
