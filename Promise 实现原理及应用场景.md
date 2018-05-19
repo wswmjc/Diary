@@ -37,3 +37,39 @@
    }
 
 ```
+&emsp;&emsp;第一步我们要控制启动，也就是在创建“承诺”的时候，将我们要做的事情入队列即：<br/>
+```javascript
+   var Promise = function(start_event){
+      var status = "start";
+      var event_list = [];
+      
+      //加入启动事件
+      if(start_event && typeof start_event === "function"){
+         event_list.push(start_event);
+      }else{
+        throw " start event error ";
+      }
+  
+   }
+```
+&emsp;&emsp;后续步骤为加入承诺后的事件，这里我们需要构建一个then方法，用来快速构建承诺链：<br/>
+```javascript
+   var Promise = function(start_event){
+      var status = "start";
+      var event_list = [];
+      
+      //加入启动事件
+      if(start_event && typeof start_event === "function"){
+         event_list.push(start_event);
+      }else{
+        throw " start event error ";
+      }
+      
+      var then = function(link_event){
+         if(link_event && typeof link_event === "function"){
+            event_list.push(start_event);
+         }
+      }
+   }
+```
+      
