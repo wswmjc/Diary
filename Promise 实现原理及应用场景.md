@@ -95,7 +95,7 @@
       
       //执行承诺
       event_list.shift()(function(){
-         while(event_list.lenght){
+         while(event_list.length>0){
            var emit_event = event_list.shift();
            emit_event();
          }
