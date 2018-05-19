@@ -20,7 +20,19 @@
 -- --
 ## 应用场景
 &emsp;&emsp;作为异步操作的解决方案，Promise在web端和nodejs服务端都有很广泛的应用。
-> 1、在前端，http的请求应答模式是典型的异步操作，我们只能控制ajax的请求和获取服务端的响应，因此promise非常
+> &emsp;&emsp;在前端，http的请求应答模式是典型的异步操作，我们只能控制ajax的请求和获取服务端的响应，因此promise非常
 适合ajax请求的封装，更进一步，我们甚至可以在dom操作和服务端接口层之间利用promise构建一层api层，或者基于钩子
 原理利用promise来封装第三方jssdk的工具类<br/>
-> 2、在服务端，由于v8引擎
+> &emsp;&emsp;在服务端，由于nodejs的非阻塞io特点，使得异步操作在服务端这种io密集型场景得到大量运用，当我们
+频繁地使用文件操作时，Promise可以完美解决回调地狱的问题，甚至可以支持“多路汇合”场景——下一步的异步操作需要多个上一步
+的异步操作结果。
+-- --
+## 基本构建
+&emsp;&emsp;基于“大话”中的描述，我们可以很容易抽象出promise的基础是一个事件队列，它可以和状态共同构成我们
+想要的结果：
+   ```javascript
+   var Promise = function() {
+       var state = "";
+       var event_list = [];
+   }
+   ```javascript
