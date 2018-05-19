@@ -67,7 +67,7 @@
       
       var then = function(link_event){
          if(link_event && typeof link_event === "function"){
-            event_list.push(start_event);
+            event_list.push(link_event);
          }
       }
    }
