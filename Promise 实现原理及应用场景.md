@@ -31,8 +31,10 @@
 &emsp;&emsp;基于“大话”中的描述，我们可以很容易抽象出promise的基础是一个事件队列，它可以和状态共同构成我们
 想要的结果：<br/>
    ```javascript
+   
    var Promise = function() {
        var state = "";
        var event_list = [];
    }
+   
    ```
