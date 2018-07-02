@@ -5,6 +5,7 @@
 * vuex总结
 * vue router 总结
 * 组件相关
+* git 相关
 
 ### 脚手架相关
 1. 安装node 和 npm
@@ -50,3 +51,17 @@
 1. 组件内的样式一定要限定scope 不然容易全局污染
 2. render组件不需要template
 3. render组件 子组件处理父组件的对象类数据 尽量通过计算属性来处理 不然容易出现递归触发
+
+### git相关
+1. git branch -a 查看分支
+2. git fetch master分支路径 获取主分支副本
+3. git rebase 合并分支
+4. git add -A 添加所有更改
+5. git stash 将更改暂存本地
+6. git status 查看各分支状态
+7. git push -f 强制推送 一般不建议-f
+8. git reset --soft 版本hash号 恢复为某个版本
+9. git log --oneline --graph --all -reflog 查看git日志
+10. git log 版本hash号
+11. git reset --hard 版本hash号
+12. git commit -m "#xxx [xxx] xxxx"
