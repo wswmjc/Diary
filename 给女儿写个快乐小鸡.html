@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Mrs Chik</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, minimal-ui" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="HandheldFriendly" content="true" />
+    <meta name="mobile-web-app-capable" content="yes" />
+
+    <style type="text/css">
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        
+        html,
+        body {
+            background: #fff;
+            color: #fff;
+            overflow: hidden;
+            touch-action: none;
+            -ms-touch-action: none;
+            height: 100%;
+        }
+        
+        #app {
+            touch-action-delay: none;
+            touch-action: none;
+            -ms-touch-action: none;
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+        
+        .eggContain {
+            position: absolute;
+        }
+        
+        .egg {
+            width: 40px;
+            height: 60px;
+            background: #ff0;
+            border-radius: 50% / 60% 60% 40% 40%;
+        }
+        
+        @keyframes shake {
+            0% {
+                transform: scale(1);
+                transform: scale(1)
+            }
+            10%,
+            20% {
+                transform: scale(0.9) rotate(-3deg);
+                transform: scale(0.9) rotate(-3deg)
+            }
+            30%,
+            50%,
+            70%,
+            90% {
+                transform: scale(1.1) rotate(3deg);
+                transform: scale(1.1) rotate(3deg)
+            }
+            40%,
+            60%,
+            80% {
+                transform: scale(1.1) rotate(-3deg);
+                transform: scale(1.1) rotate(-3deg)
+            }
+            100% {
+                transform: scale(1) rotate(0);
+                transform: scale(1) rotate(0)
+            }
+        }
+        
+        .chick {
+            animation: shake 3s both infinite;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app" @click="lay($event)" :class="appClass">
+        <div class="eggContain" v-for="(egg, i) in eggs" :style="{top:egg.y+'px',left:egg.x+'px'}">
+            <div class="egg" v-if="!egg.open"></div>
+            <chik class="chick" v-if="egg.open"></chik>
+        </div>
+        <chik :style="{position:'absolute',top:eY+'px',left:eX+'px'}"></chik>
+    </div>
+
+    <script type="text/x-template" id="chik-template">
+        <svg width="72" height="72" xmlns="http://www.w3.org/2000/svg">
+ <g>
+ <title>Layer 1</title>
+ <path id="svg_4" d="m26.64917,18.07781c0,0 -3.89608,-11.42856 -2.59739,-13.63635c1.29869,-2.2078 4.02596,-2.72728 5.84414,-1.68832c2.07792,1.55844 2.20779,5.97402 2.07793,5.84416c0.12986,0.12986 4.67531,-4.28572 7.66232,-3.89611c3.63636,0.25974 6.62337,2.5974 7.92209,6.36364c0.64933,4.80518 -1.68833,7.14285 -1.81818,7.01298c0.12985,0.12987 -19.09091,0 -19.09091,0z" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="#ff0000"/>
+ <path id="svg_5" d="m16.5193,26.7791c0,0 -14.28571,-3.76623 -14.41556,-3.8961c0.12986,0.12987 12.0779,9.99999 11.94804,9.87012c0.12986,0.12987 -11.03897,10.90908 -11.03897,10.90908c0,0 11.94804,-3.63636 11.94804,-3.63636" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="#ff7f00"/>
+ <path id="svg_6" d="m60.41538,38.59727c0,0 4.93506,-1.16883 6.36363,-0.77922c1.42857,0.38961 4.02597,5.06493 3.8961,6.23376c-0.12987,1.16883 -5.06493,-0.25974 -5.19479,-0.38961c0.12986,0.12987 3.24674,5.06493 3.11688,4.93506c0.12986,0.12987 -5.84417,-0.64935 -5.84417,-0.64935c0,0 4.02597,3.63636 2.85714,6.23376c-1.16883,2.5974 -3.24675,2.07792 -3.37661,1.94806c0.12986,0.12987 -7.53248,-5.71429 -7.66233,-5.84415" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="#ffff00"/>
+ <path id="svg_11" d="m25.99982,57.03882" opacity="0.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+ <path stroke="#000" id="svg_12" d="m27.03878,56.38947c0,0 -8.93939,8.5869 -9.09089,8.44136" opacity="0.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" fill="none"/>
+ <path id="svg_13" d="m14.70112,56.90895c0,0 9.22077,3.11688 9.09092,2.98702c0.12986,0.12987 2.59739,9.61038 2.46753,9.48051" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+ <path id="svg_14" d="m47.2985,56.64921c0,0 6.10389,9.74025 5.97403,9.61039" opacity="0.5" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+ <path id="svg_15" d="m58.98681,59.11674c0,0 -9.87013,1.16883 -9.99998,1.03897c0.12985,0.12986 -4.28573,8.44155 -4.41558,8.31168" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+ <ellipse stroke="#000" ry="20.2498" rx="22.74978" id="svg_2" cy="36.99805" cx="36.74718" stroke-width="1.5" fill="#ffff00"/>
+ <ellipse ry="1.68831" rx="1.49351" id="svg_16" cy="29.7013" cx="27.55845" fill-opacity="null" stroke-opacity="null" stroke-width="1.5" stroke="#000" fill="none"/>
+ </g>
+</svg>
+    </script>
+
+    <script src="https://cdn.bootcss.com/vue/2.5.16/vue.min.js"></script>
+
+    <script>
+        Vue.component('chik', {
+            template: '#chik-template',
+            data: function() {
+                return {};
+            },
+        });
+
+        var app = new Vue({
+            el: '#app',
+            data: function() {
+                return {
+                    appClass: '',
+                    eggs: [],
+                    eX: 0,
+                    eY: 0
+                };
+            },
+            created: function() {
+                window.addEventListener('resize', this.onResize);
+                this.onResize();
+            },
+            methods: {
+                lay: function(evt) {
+                    var maxW = window.innerWidth;
+                    var maxH = window.innerHeight;
+                    var eggX = Math.random() * maxW
+                    var eggY = Math.random() * maxH
+                    this.eX = eggX - 20
+                    this.eY = eggY - 65
+                    this.eggs.push({
+                        x: eggX,
+                        y: eggY,
+                        open: false,
+                        openTime: 4
+                    });
+                },
+                onResize: function() {
+                    if (window.screen.width > window.screen.height) {
+                        this.appClass = 'landscape';
+                    } else {
+                        this.appClass = 'portrait'
+                    }
+                }
+            },
+            mounted() {
+                let eggs = this.eggs
+                setInterval(function() {
+                    if (eggs.length > 0) {
+                        eggs.forEach(function(egg, index) {
+                            if (egg.openTime > 1) {
+                                egg.openTime--
+                            } else if (egg.openTime == 1) {
+                                egg.openTime--
+                                    egg.open = true
+                            }
+                        })
+                    }
+                }, 1000)
+            }
+        });
+    </script>
+    </b</html>
